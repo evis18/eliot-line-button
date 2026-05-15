@@ -4,13 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TS Eliot Line Quiz</title>
-    <link rel="stylesheet" href="styles.css?v=quiz-4">
+    <link rel="stylesheet" href="styles.css?v=games-1">
   </head>
   <body>
     <main class="page">
       <section class="poem-panel" aria-labelledby="page-title">
         <p class="kicker">T. S. Eliot line quiz</p>
         <h1 id="page-title">TS Eliot Line Quiz</h1>
+        <div class="game-bar" aria-live="polite">
+          <p id="game-progress">Question 1 of 5</p>
+          <p id="game-score">Score 0/5</p>
+        </div>
         <blockquote id="poem-line" class="poem-line">
           Let us go then, you and I
         </blockquote>
@@ -20,7 +24,14 @@
           <div id="choice-list" class="choice-list"></div>
           <p id="answer-feedback" class="answer-feedback" aria-live="polite"></p>
         </section>
-        <button id="line-button" type="button">Show another line</button>
+        <div class="game-actions">
+          <button id="line-button" type="button">Next question</button>
+          <button id="new-game-button" class="secondary-button" type="button">New game</button>
+        </div>
+        <section id="game-summary" class="game-summary" aria-live="polite" hidden>
+          <p id="summary-score"></p>
+          <button id="replay-current-button" class="secondary-button" type="button">Replay this game</button>
+        </section>
         <section id="stanza-panel" class="stanza-panel" aria-live="polite" hidden>
           <div class="stanza-heading">
             <p class="stanza-label">Stanza</p>
@@ -29,6 +40,13 @@
             </a>
           </div>
           <div id="stanza-lines" class="stanza-lines"></div>
+        </section>
+        <section class="history-panel" aria-labelledby="history-title">
+          <div class="history-heading">
+            <p id="history-title" class="history-title">Past games</p>
+            <button id="clear-history-button" class="text-button" type="button">Clear</button>
+          </div>
+          <div id="history-list" class="history-list"></div>
         </section>
         <p class="credit">
           Lines from Project Gutenberg public-domain editions:
@@ -42,7 +60,7 @@
         </p>
       </section>
     </main>
-    <script src="lines-data.js?v=quiz-4"></script>
-    <script src="script.js?v=quiz-4"></script>
+    <script src="lines-data.js?v=games-1"></script>
+    <script src="script.js?v=games-1"></script>
   </body>
 </html>
