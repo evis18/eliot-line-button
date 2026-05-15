@@ -3,6 +3,9 @@ const lines = window.poemLines ?? [];
 const lineElement = document.querySelector("#poem-line");
 const sourceElement = document.querySelector("#poem-source");
 const button = document.querySelector("#line-button");
+const stanzaPanel = document.querySelector("#stanza-panel");
+const stanzaLinesElement = document.querySelector("#stanza-lines");
+const stanzaSourceLink = document.querySelector("#stanza-source-link");
 
 let currentIndex = 0;
 const recentIndexes = [];
@@ -46,10 +49,31 @@ function showLine(index) {
   rememberIndex(currentIndex);
   lineElement.textContent = cleanDisplayLine(lines[currentIndex].text);
   sourceElement.textContent = lines[currentIndex].source;
+  stanzaPanel.hidden = true;
 }
 
 function showNextLine() {
   showLine(pickNextIndex());
+}
+
+function renderStanza() {
+  const line = lines[currentIndex];
+  stanzaLinesElement.replaceChildren();
+
+  for (let index = 0; index < line.stanza.length; index += 1) {
+    const stanzaLine = document.createElement("p");
+    stanzaLine.textContent = cleanDisplayLine(line.stanza[index]);
+
+    if (index === line.stanzaLineIndex) {
+      stanzaLine.classList.add("is-selected");
+    }
+
+    stanzaLinesElement.append(stanzaLine);
+  }
+
+  stanzaSourceLink.href = line.sourceUrl;
+  stanzaPanel.hidden = false;
+  stanzaPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 if (lines.length > 0) {
@@ -58,3 +82,4 @@ if (lines.length > 0) {
 }
 
 button.addEventListener("click", showNextLine);
+lineElement.addEventListener("click", renderStanza);

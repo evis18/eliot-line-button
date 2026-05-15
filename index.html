@@ -11,11 +11,20 @@
       <section class="poem-panel" aria-labelledby="page-title">
         <p class="kicker">T. S. Eliot line machine</p>
         <h1 id="page-title">Press for a poem line</h1>
-        <blockquote id="poem-line">
-          Let us go then, you and I,
-        </blockquote>
+        <button id="poem-line" class="line-link" type="button">
+          Let us go then, you and I
+        </button>
         <p id="poem-source" class="source">"The Love Song of J. Alfred Prufrock"</p>
         <button id="line-button" type="button">Show another line</button>
+        <section id="stanza-panel" class="stanza-panel" aria-live="polite" hidden>
+          <div class="stanza-heading">
+            <p class="stanza-label">Stanza</p>
+            <a id="stanza-source-link" href="https://www.gutenberg.org/ebooks/1567" target="_blank" rel="noreferrer">
+              Open source
+            </a>
+          </div>
+          <div id="stanza-lines" class="stanza-lines"></div>
+        </section>
         <p class="credit">
           Lines from Project Gutenberg public-domain editions:
           <a href="https://www.gutenberg.org/ebooks/1567" target="_blank" rel="noreferrer">
