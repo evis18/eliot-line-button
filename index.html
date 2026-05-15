@@ -4,17 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Eliot Line Button</title>
-    <link rel="stylesheet" href="styles.css?v=stanza-2">
+    <link rel="stylesheet" href="styles.css?v=quiz-1">
   </head>
   <body>
     <main class="page">
       <section class="poem-panel" aria-labelledby="page-title">
         <p class="kicker">T. S. Eliot line machine</p>
         <h1 id="page-title">Press for a poem line</h1>
-        <button id="poem-line" class="line-link" type="button">
+        <blockquote id="poem-line" class="poem-line">
           Let us go then, you and I
-        </button>
+        </blockquote>
         <p id="poem-source" class="source">"The Love Song of J. Alfred Prufrock"</p>
+        <section class="choice-panel" aria-labelledby="choice-title">
+          <p id="choice-title" class="choice-title">Which line comes next?</p>
+          <div id="choice-list" class="choice-list"></div>
+          <p id="answer-feedback" class="answer-feedback" aria-live="polite"></p>
+        </section>
         <button id="line-button" type="button">Show another line</button>
         <section id="stanza-panel" class="stanza-panel" aria-live="polite" hidden>
           <div class="stanza-heading">
@@ -37,7 +42,7 @@
         </p>
       </section>
     </main>
-    <script src="lines-data.js?v=stanza-2"></script>
-    <script src="script.js?v=stanza-2"></script>
+    <script src="lines-data.js?v=quiz-1"></script>
+    <script src="script.js?v=quiz-1"></script>
   </body>
 </html>

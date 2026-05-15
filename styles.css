@@ -56,48 +56,84 @@ h1 {
   letter-spacing: 0;
 }
 
-.line-link {
-  display: block;
-  width: 100%;
+.poem-line {
   min-height: 4.6em;
   margin: 34px 0 12px;
   padding: 0 0 0 22px;
   border-left: 4px solid var(--accent);
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 0;
-  border-radius: 0;
-  color: var(--ink);
-  background: transparent;
-  font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.35rem, 4vw, 2.1rem);
-  font-weight: 400;
   line-height: 1.3;
-  text-align: left;
-  transition: color 160ms ease, border-color 160ms ease;
-}
-
-.line-link:hover {
-  color: var(--accent-dark);
-  background: transparent;
-  border-color: var(--accent-dark);
-}
-
-.line-link:active {
-  transform: none;
-}
-
-.line-link:focus-visible {
-  outline: 3px solid rgba(47, 111, 106, 0.35);
-  outline-offset: 5px;
 }
 
 .source {
-  min-height: 1.4em;
-  margin: 0 0 34px 26px;
+  margin: 0 0 24px 26px;
   color: var(--muted);
   font-size: 1rem;
   line-height: 1.4;
+}
+
+.choice-panel {
+  margin: 0 0 28px;
+}
+
+.choice-title {
+  margin: 0 0 12px;
+  color: var(--accent-dark);
+  font: 700 0.78rem/1.2 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-transform: uppercase;
+}
+
+.choice-list {
+  display: grid;
+  gap: 10px;
+}
+
+.choice-button {
+  min-height: 44px;
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fbfaf6;
+  font: 1rem/1.35 Georgia, "Times New Roman", serif;
+  text-align: left;
+}
+
+.choice-button:hover:not(:disabled) {
+  color: var(--accent-dark);
+  background: rgba(47, 111, 106, 0.08);
+}
+
+.choice-button:disabled {
+  cursor: default;
+  opacity: 0.78;
+}
+
+.choice-button.is-correct {
+  border-color: var(--accent);
+  background: rgba(47, 111, 106, 0.14);
+  color: var(--accent-dark);
+}
+
+.choice-button.is-wrong {
+  border-color: #a45b52;
+  background: rgba(164, 91, 82, 0.12);
+  color: #74342f;
+}
+
+.answer-feedback {
+  min-height: 1.4em;
+  margin: 12px 0 0;
+  font: 700 0.95rem/1.4 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.answer-feedback.is-correct {
+  color: var(--accent-dark);
+}
+
+.answer-feedback.is-wrong {
+  color: #74342f;
 }
 
 button {
@@ -170,6 +206,12 @@ button:focus-visible {
 .stanza-lines .is-selected {
   background: rgba(47, 111, 106, 0.12);
   color: var(--accent-dark);
+}
+
+.stanza-lines .is-answer {
+  background: rgba(47, 111, 106, 0.2);
+  color: var(--accent-dark);
+  font-weight: 700;
 }
 
 .credit {
