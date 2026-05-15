@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eliot Line Button</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="page">
+      <section class="poem-panel" aria-labelledby="page-title">
+        <p class="kicker">T. S. Eliot line machine</p>
+        <h1 id="page-title">Press for a poem line</h1>
+        <blockquote id="poem-line">
+          Let us go then, you and I,
+        </blockquote>
+        <p id="poem-source" class="source">"The Love Song of J. Alfred Prufrock"</p>
+        <button id="line-button" type="button">Show another line</button>
+        <p class="credit">
+          Lines from Project Gutenberg public-domain editions:
+          <a href="https://www.gutenberg.org/ebooks/1567" target="_blank" rel="noreferrer">
+            Poems
+          </a>
+          and
+          <a href="https://www.gutenberg.org/ebooks/1321" target="_blank" rel="noreferrer">
+            The Waste Land
+          </a>.
+        </p>
+      </section>
+    </main>
+    <script src="lines-data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
