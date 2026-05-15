@@ -117,16 +117,15 @@ function showNextLine() {
   showLine(pickNextIndex());
 }
 
-function lockChoices() {
-  for (const choiceButton of choiceList.querySelectorAll("button")) {
-    choiceButton.disabled = true;
+function lockAllChoices() {
+  for (const optionButton of choiceList.querySelectorAll("button")) {
+    optionButton.disabled = true;
   }
 }
 
 function handleChoice(choice, correctAnswer, choiceButton) {
-  lockChoices();
-
   if (choice === correctAnswer) {
+    lockAllChoices();
     choiceButton.classList.add("is-correct");
     answerFeedback.textContent = "Correct.";
     answerFeedback.classList.add("is-correct");
@@ -135,7 +134,8 @@ function handleChoice(choice, correctAnswer, choiceButton) {
   }
 
   choiceButton.classList.add("is-wrong");
-  answerFeedback.textContent = "Wrong.";
+  choiceButton.disabled = true;
+  answerFeedback.textContent = "Wrong. Try again.";
   answerFeedback.classList.add("is-wrong");
 }
 
