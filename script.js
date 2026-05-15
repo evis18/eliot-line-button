@@ -164,8 +164,7 @@ function renderStanza() {
 }
 
 if (eligibleIndexes.length > 0) {
-  const openingIndex = lines.findIndex((line) => line.text === "Let us go then, you and I,");
-  showLine(openingIndex >= 0 ? openingIndex : 0);
+  showLine(pickNextIndex());
 }
 
 button.addEventListener("click", showNextLine);
