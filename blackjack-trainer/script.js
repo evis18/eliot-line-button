@@ -28,6 +28,7 @@ let dealerHand = [];
 let hands = [];
 let activeHand = 0;
 let roundOver = true;
+let dealerPlaying = false;
 let units = 0;
 let correctPlays = 0;
 let totalPlays = 0;
@@ -110,6 +111,7 @@ function newHand(cards, bet = 1, fromSplit = false) {
 }
 
 function startRound() {
+  dealerPlaying = false;
   dealerHand = [draw(), draw()];
   hands = [newHand([draw(), draw()])];
   activeHand = 0;
@@ -122,7 +124,7 @@ function startRound() {
   const dealer = handValue(dealerHand);
 
   if (handValue(player.cards).blackjack || dealer.blackjack) {
-    settleRound();
+    beginDealerTurn();
   }
 
   render();
@@ -305,7 +307,7 @@ function finishHand() {
   const finishedHand = activeHand + 1;
   hands[activeHand].done = true;
   moveToNextHand();
-  if (!roundOver) {
+  if (!roundOver && !dealerPlaying) {
     roundFeedbackEl.textContent = `Hand ${finishedHand} complete. Now play Hand ${activeHand + 1} of ${hands.length}.`;
   }
 }
@@ -315,30 +317,62 @@ function moveToNextHand() {
   const fallbackIndex = hands.findIndex((hand) => !hand.done);
   const handIndex = nextIndex === -1 ? fallbackIndex : nextIndex;
   if (handIndex === -1) {
-    settleRound();
+    beginDealerTurn();
     return;
   }
   activeHand = handIndex;
 }
 
-function dealerPlay() {
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+async function dealerPlay() {
+  dealerPlaying = true;
+  roundFeedbackEl.textContent = "Dealer reveals the hole card.";
+  render();
+  await sleep(650);
+
   while (true) {
     const value = handValue(dealerHand);
     if (value.total > 17) return;
     if (value.total === 17 && !value.soft) return;
+    roundFeedbackEl.textContent = value.total === 17 && value.soft
+      ? "Dealer hits soft 17."
+      : `Dealer hits ${value.total}.`;
     dealerHand.push(draw());
+    render();
+    await sleep(750);
   }
 }
 
+async function beginDealerTurn() {
+  if (dealerPlaying || roundOver) return;
+  const dealerValue = handValue(dealerHand);
+  const dealerBlackjack = dealerValue.blackjack;
+  const dealerNeedsToPlay = !dealerBlackjack &&
+    hands.some((hand) => !handValue(hand.cards).bust && !handValue(hand.cards).blackjack);
+
+  if (dealerNeedsToPlay) {
+    await dealerPlay();
+  } else {
+    dealerPlaying = true;
+    roundFeedbackEl.textContent = "Dealer reveals the hole card.";
+    render();
+    await sleep(650);
+  }
+
+  settleRound();
+}
+
 function settleRound() {
+  dealerPlaying = false;
   roundOver = true;
   activeHand = 0;
   const dealerValue = handValue(dealerHand);
   const dealerBlackjack = dealerValue.blackjack;
-
-  if (!dealerBlackjack && hands.some((hand) => !handValue(hand.cards).bust && !handValue(hand.cards).blackjack)) {
-    dealerPlay();
-  }
 
   const finalDealer = handValue(dealerHand);
   const results = [];
@@ -379,6 +413,7 @@ function settleRound() {
 
   roundFeedbackEl.textContent = `Dealer finished. Round over: ${results.join(", ")}.`;
   updateStats();
+  render();
 }
 
 function updateStats() {
@@ -394,7 +429,7 @@ function renderCard(card, hidden = false) {
 }
 
 function render() {
-  const hideHole = !roundOver;
+  const hideHole = !roundOver && !dealerPlaying;
   dealerCardsEl.replaceChildren(...dealerHand.map((card, index) => renderCard(card, index === 1 && hideHole)));
   const dealerVisible = hideHole ? handValue([dealerHand[0]]) : handValue(dealerHand);
   dealerTotalEl.textContent = hideHole ? `Showing ${dealerVisible.total}` : `Total ${dealerVisible.total}`;
@@ -402,21 +437,26 @@ function render() {
   const hand = hands[activeHand] ?? hands[0];
   playerCardsEl.replaceChildren(...hand.cards.map((card) => renderCard(card)));
   const playerValue = handValue(hand.cards);
-  playerTotalEl.textContent = `${playerValue.soft ? "Soft" : "Total"} ${playerValue.total} • Bet ${hand.bet}`;
+  const showPlayerTotal = hand.done || roundOver;
+  const totalText = showPlayerTotal
+    ? `${playerValue.soft ? "Soft" : "Total"} ${playerValue.total}`
+    : "Count it";
+  playerTotalEl.textContent = `${totalText} • Bet ${hand.bet}`;
   playerLabelEl.textContent = hands.length > 1 ? `Hand ${activeHand + 1} of ${hands.length}` : "Your hand";
 
-  const activeHandIsPlayable = !roundOver && !hand.done;
+  const activeHandIsPlayable = !roundOver && !dealerPlaying && !hand.done;
   const splitAcesAwaitingResplit = hand.splitAces && canSplit(hand);
   controls.hit.disabled = !activeHandIsPlayable || hand.splitAces;
   controls.stand.disabled = !activeHandIsPlayable || splitAcesAwaitingResplit;
   controls.double.disabled = !activeHandIsPlayable || !canDouble(hand);
   controls.split.disabled = !activeHandIsPlayable || !canSplit(hand);
+  controls.deal.disabled = dealerPlaying;
 
   handTabsEl.replaceChildren(...hands.map((item, index) => {
     const tab = document.createElement("button");
     tab.type = "button";
     tab.className = index === activeHand ? "active" : "";
-    const total = handValue(item.cards).total;
+    const total = item.done || roundOver ? handValue(item.cards).total : "count it";
     const status = item.result || (item.done ? "done" : "playing");
     tab.textContent = `Hand ${index + 1}: ${total} • bet ${item.bet} • ${status}`;
     tab.disabled = index === activeHand;
