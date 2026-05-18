@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wynn Blackjack Trainer</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="table">
+      <section class="trainer" aria-labelledby="title">
+        <header class="topbar">
+          <div>
+            <h1 id="title">Wynn Blackjack Trainer</h1>
+            <p>6-deck H17, DAS, RSA, blackjack pays 3:2. Units only.</p>
+          </div>
+          <div class="stats" aria-live="polite">
+            <span id="bankroll">Units 0.0</span>
+            <span id="accuracy">Strategy 0/0</span>
+          </div>
+        </header>
+
+        <section class="felt" aria-live="polite">
+          <div class="hand dealer-area">
+            <div class="hand-heading">
+              <h2>Dealer</h2>
+              <span id="dealer-total"></span>
+            </div>
+            <div id="dealer-cards" class="cards"></div>
+          </div>
+
+          <div class="hand player-area">
+            <div class="hand-heading">
+              <h2 id="player-label">Your hand</h2>
+              <span id="player-total"></span>
+            </div>
+            <div id="player-cards" class="cards"></div>
+          </div>
+        </section>
+
+        <section class="controls">
+          <button id="hit-button" type="button">Hit</button>
+          <button id="stand-button" type="button">Stand</button>
+          <button id="double-button" type="button">Double</button>
+          <button id="split-button" type="button">Split</button>
+          <button id="deal-button" class="secondary" type="button">New hand</button>
+        </section>
+
+        <section class="feedback" aria-live="polite">
+          <p id="strategy-feedback">Make your play.</p>
+          <p id="round-feedback"></p>
+        </section>
+
+        <section class="hands-strip" aria-label="Split hands">
+          <div id="hand-tabs" class="hand-tabs"></div>
+        </section>
+
+        <section class="strategy-card-wrap">
+          <button id="strategy-card-button" class="secondary hold-button" type="button">
+            Hold for strategy card
+          </button>
+          <div id="strategy-card" class="strategy-card" hidden>
+            <h2>Basic Strategy Card</h2>
+            <div class="mini-grid">
+              <div>
+                <h3>Hard totals</h3>
+                <p>17+: Stand. 13-16 stand vs 2-6, otherwise hit. 12 stands vs 4-6. 11 doubles all. 10 doubles vs 2-9. 9 doubles vs 3-6.</p>
+              </div>
+              <div>
+                <h3>Soft totals</h3>
+                <p>A,8 stands except double vs 6. A,7 doubles vs 2-6, stands vs 7-8, hits vs 9-A. A,2-A,6 double in strong dealer-bust spots.</p>
+              </div>
+              <div>
+                <h3>Pairs</h3>
+                <p>Always split A,A and 8,8. Never split 10s or 5s. Split 2s/3s/6s/7s in dealer weak spots. Split 9s except vs 7, 10, A.</p>
+              </div>
+              <div>
+                <h3>Surrender note</h3>
+                <p>Some Wynn tables offer late surrender, but this trainer uses only Hit, Stand, Double, Split. Surrender spots use the playable fallback.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

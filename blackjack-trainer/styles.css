@@ -1,0 +1,283 @@
+:root {
+  color-scheme: dark;
+  --felt: #123f35;
+  --felt-light: #1a594b;
+  --panel: #102a25;
+  --ink: #f4f0e8;
+  --muted: #c9d0c8;
+  --gold: #d5ae5b;
+  --red: #c94e47;
+  --green: #66c28b;
+  --edge: rgba(255, 255, 255, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background: radial-gradient(circle at 50% 0%, #25735e 0%, var(--felt) 52%, #071c18 100%);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.table {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+}
+
+.trainer {
+  width: min(1040px, 100%);
+  max-height: calc(100vh - 28px);
+  overflow: auto;
+  padding: 18px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  background: rgba(10, 32, 27, 0.88);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+}
+
+.topbar,
+.hand-heading,
+.controls,
+.stats,
+.game-row,
+.hand-tabs {
+  display: flex;
+  align-items: center;
+}
+
+.topbar {
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  line-height: 1;
+}
+
+.topbar p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stats {
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.stats span,
+.hand-tabs button {
+  padding: 8px 10px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 800;
+}
+
+.felt {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.hand {
+  min-height: 210px;
+  padding: 14px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+.hand-heading {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.hand-heading h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.hand-heading span {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.card {
+  width: 76px;
+  aspect-ratio: 0.72;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid #e6e0d4;
+  background: #f7f2e9;
+  color: #141414;
+  font: 900 1.35rem/1 Georgia, serif;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.card.red {
+  color: #b72828;
+}
+
+.card.back {
+  border-color: var(--gold);
+  background: repeating-linear-gradient(45deg, #143a55 0 8px, #0f2b40 8px 16px);
+  color: transparent;
+}
+
+.controls {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 8px;
+  color: #101410;
+  background: var(--gold);
+  font: 900 0.95rem/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+button.secondary {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--edge);
+}
+
+.feedback {
+  display: grid;
+  gap: 6px;
+  min-height: 64px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+#strategy-feedback.good {
+  color: var(--green);
+}
+
+#strategy-feedback.bad {
+  color: #ffaaa4;
+}
+
+#round-feedback {
+  color: var(--muted);
+}
+
+.hands-strip {
+  margin-top: 10px;
+}
+
+.hand-tabs {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hand-tabs button.active {
+  outline: 2px solid var(--gold);
+  background: rgba(213, 174, 91, 0.18);
+}
+
+.hand-tabs button:not(.active) {
+  cursor: pointer;
+}
+
+.strategy-card-wrap {
+  position: relative;
+  margin-top: 14px;
+}
+
+.strategy-card {
+  position: absolute;
+  left: 0;
+  bottom: 52px;
+  z-index: 5;
+  width: min(720px, 100%);
+  padding: 16px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: #f8f1df;
+  color: #19150f;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.42);
+}
+
+.strategy-card h2 {
+  margin-bottom: 10px;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mini-grid div {
+  padding: 10px;
+  border: 1px solid #d8c797;
+  border-radius: 8px;
+}
+
+.mini-grid h3 {
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.mini-grid p {
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  .felt,
+  .mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar,
+  .felt {
+    display: grid;
+  }
+
+  .card {
+    width: 60px;
+  }
+}
