@@ -13,6 +13,8 @@ const strategyFeedbackEl = document.querySelector("#strategy-feedback");
 const roundFeedbackEl = document.querySelector("#round-feedback");
 const handTabsEl = document.querySelector("#hand-tabs");
 const strategyCard = document.querySelector("#strategy-card");
+const strategyTablesEl = document.querySelector("#strategy-card-tables");
+const betInput = document.querySelector("#bet-input");
 
 const controls = {
   hit: document.querySelector("#hit-button"),
@@ -32,6 +34,43 @@ let dealerPlaying = false;
 let units = 0;
 let correctPlays = 0;
 let totalPlays = 0;
+
+const hardRows = [
+  { label: "17+", values: ["S", "S", "S", "S", "S", "S", "S", "S", "S", "S"] },
+  { label: "16", values: ["S", "S", "S", "S", "S", "H", "H", "H", "H", "H"] },
+  { label: "15", values: ["S", "S", "S", "S", "S", "H", "H", "H", "H", "H"] },
+  { label: "14", values: ["S", "S", "S", "S", "S", "H", "H", "H", "H", "H"] },
+  { label: "13", values: ["S", "S", "S", "S", "S", "H", "H", "H", "H", "H"] },
+  { label: "12", values: ["H", "H", "S", "S", "S", "H", "H", "H", "H", "H"] },
+  { label: "11", values: ["D", "D", "D", "D", "D", "D", "D", "D", "D", "D"] },
+  { label: "10", values: ["D", "D", "D", "D", "D", "D", "D", "D", "H", "H"] },
+  { label: "9", values: ["H", "D", "D", "D", "D", "H", "H", "H", "H", "H"] },
+  { label: "8-", values: ["H", "H", "H", "H", "H", "H", "H", "H", "H", "H"] },
+];
+
+const softRows = [
+  { label: "A,9", values: ["S", "S", "S", "S", "S", "S", "S", "S", "S", "S"] },
+  { label: "A,8", values: ["S", "S", "S", "S", "D", "S", "S", "S", "S", "S"] },
+  { label: "A,7", values: ["D", "D", "D", "D", "D", "S", "S", "H", "H", "H"] },
+  { label: "A,6", values: ["H", "D", "D", "D", "D", "H", "H", "H", "H", "H"] },
+  { label: "A,5", values: ["H", "H", "D", "D", "D", "H", "H", "H", "H", "H"] },
+  { label: "A,4", values: ["H", "H", "D", "D", "D", "H", "H", "H", "H", "H"] },
+  { label: "A,3", values: ["H", "H", "H", "D", "D", "H", "H", "H", "H", "H"] },
+  { label: "A,2", values: ["H", "H", "H", "D", "D", "H", "H", "H", "H", "H"] },
+];
+
+const pairRows = [
+  { label: "A,A", values: ["P", "P", "P", "P", "P", "P", "P", "P", "P", "P"] },
+  { label: "10,10", values: ["S", "S", "S", "S", "S", "S", "S", "S", "S", "S"] },
+  { label: "9,9", values: ["P", "P", "P", "P", "P", "S", "P", "P", "S", "S"] },
+  { label: "8,8", values: ["P", "P", "P", "P", "P", "P", "P", "P", "P", "P"] },
+  { label: "7,7", values: ["P", "P", "P", "P", "P", "P", "H", "H", "H", "H"] },
+  { label: "6,6", values: ["P", "P", "P", "P", "P", "H", "H", "H", "H", "H"] },
+  { label: "5,5", values: ["D", "D", "D", "D", "D", "D", "D", "D", "H", "H"] },
+  { label: "4,4", values: ["H", "H", "H", "P", "P", "H", "H", "H", "H", "H"] },
+  { label: "3,3", values: ["P", "P", "P", "P", "P", "P", "H", "H", "H", "H"] },
+  { label: "2,2", values: ["P", "P", "P", "P", "P", "P", "H", "H", "H", "H"] },
+];
 
 function makeDeck() {
   const cards = [];
@@ -110,10 +149,16 @@ function newHand(cards, bet = 1, fromSplit = false) {
   return { cards, bet, done: false, result: "", doubled: false, splitAces: false, fromSplit };
 }
 
+function currentBet() {
+  const value = Number.parseInt(betInput.value, 10);
+  if (!Number.isFinite(value) || value < 1) return 1;
+  return Math.min(value, 100);
+}
+
 function startRound() {
   dealerPlaying = false;
   dealerHand = [draw(), draw()];
-  hands = [newHand([draw(), draw()])];
+  hands = [newHand([draw(), draw()], currentBet())];
   activeHand = 0;
   roundOver = false;
   strategyFeedbackEl.textContent = "Make your play.";
@@ -421,6 +466,78 @@ function updateStats() {
   accuracyEl.textContent = `Strategy ${correctPlays}/${totalPlays}`;
 }
 
+function actionClass(action) {
+  return {
+    H: "hit",
+    S: "stand",
+    D: "double",
+    P: "split",
+  }[action] ?? "";
+}
+
+function actionLabel(action) {
+  return {
+    H: "Hit",
+    S: "Stand",
+    D: "Double",
+    P: "Split",
+  }[action] ?? action;
+}
+
+function buildStrategyTable(title, rows) {
+  const section = document.createElement("section");
+  section.className = "strategy-table-section";
+
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  const corner = document.createElement("th");
+  corner.textContent = "Hand";
+  headerRow.append(corner);
+
+  for (const upcard of upcards) {
+    const th = document.createElement("th");
+    th.textContent = upcard;
+    headerRow.append(th);
+  }
+
+  thead.append(headerRow);
+  table.append(thead);
+
+  const tbody = document.createElement("tbody");
+  for (const row of rows) {
+    const tr = document.createElement("tr");
+    const th = document.createElement("th");
+    th.textContent = row.label;
+    tr.append(th);
+
+    for (const action of row.values) {
+      const td = document.createElement("td");
+      td.className = actionClass(action);
+      td.textContent = action;
+      td.title = actionLabel(action);
+      tr.append(td);
+    }
+
+    tbody.append(tr);
+  }
+
+  table.append(tbody);
+  section.append(heading, table);
+  return section;
+}
+
+function renderStrategyCard() {
+  strategyTablesEl.replaceChildren(
+    buildStrategyTable("Hard totals", hardRows),
+    buildStrategyTable("Soft totals", softRows),
+    buildStrategyTable("Pairs", pairRows),
+  );
+}
+
 function renderCard(card, hidden = false) {
   const el = document.createElement("div");
   el.className = `card ${hidden ? "back" : ""} ${["♥", "♦"].includes(card.suit) ? "red" : ""}`;
@@ -451,6 +568,7 @@ function render() {
   controls.double.disabled = !activeHandIsPlayable || !canDouble(hand);
   controls.split.disabled = !activeHandIsPlayable || !canSplit(hand);
   controls.deal.disabled = dealerPlaying;
+  betInput.disabled = !roundOver || dealerPlaying;
 
   handTabsEl.replaceChildren(...hands.map((item, index) => {
     const tab = document.createElement("button");
@@ -473,17 +591,31 @@ controls.stand.addEventListener("click", stand);
 controls.double.addEventListener("click", doubleDown);
 controls.split.addEventListener("click", split);
 controls.deal.addEventListener("click", startRound);
+betInput.addEventListener("change", () => {
+  betInput.value = currentBet();
+});
 
-controls.card.addEventListener("pointerdown", () => {
+function showStrategyCard() {
   strategyCard.hidden = false;
-});
-controls.card.addEventListener("pointerup", () => {
+}
+
+function hideStrategyCard() {
   strategyCard.hidden = true;
+}
+
+controls.card.addEventListener("pointerdown", showStrategyCard);
+controls.card.addEventListener("pointerup", hideStrategyCard);
+controls.card.addEventListener("pointerleave", hideStrategyCard);
+controls.card.addEventListener("mousedown", showStrategyCard);
+controls.card.addEventListener("mouseup", hideStrategyCard);
+controls.card.addEventListener("mouseleave", hideStrategyCard);
+controls.card.addEventListener("keydown", (event) => {
+  if (event.key === " " || event.key === "Enter") showStrategyCard();
 });
-controls.card.addEventListener("pointerleave", () => {
-  strategyCard.hidden = true;
-});
+controls.card.addEventListener("keyup", hideStrategyCard);
+controls.card.addEventListener("blur", hideStrategyCard);
 
 deck = makeDeck();
+renderStrategyCard();
 updateStats();
 startRound();

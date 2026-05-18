@@ -43,6 +43,10 @@
           <button id="stand-button" type="button">Stand</button>
           <button id="double-button" type="button">Double</button>
           <button id="split-button" type="button">Split</button>
+          <label class="bet-control">
+            Bet
+            <input id="bet-input" type="number" min="1" max="100" step="1" value="1">
+          </label>
           <button id="deal-button" class="secondary" type="button">New hand</button>
         </section>
 
@@ -60,25 +64,9 @@
             Hold for strategy card
           </button>
           <div id="strategy-card" class="strategy-card" hidden>
-            <h2>Basic Strategy Card</h2>
-            <div class="mini-grid">
-              <div>
-                <h3>Hard totals</h3>
-                <p>17+: Stand. 13-16 stand vs 2-6, otherwise hit. 12 stands vs 4-6. 11 doubles all. 10 doubles vs 2-9. 9 doubles vs 3-6.</p>
-              </div>
-              <div>
-                <h3>Soft totals</h3>
-                <p>A,8 stands except double vs 6. A,7 doubles vs 2-6, stands vs 7-8, hits vs 9-A. A,2-A,6 double in strong dealer-bust spots.</p>
-              </div>
-              <div>
-                <h3>Pairs</h3>
-                <p>Always split A,A and 8,8. Never split 10s or 5s. Split 2s/3s/6s/7s in dealer weak spots. Split 9s except vs 7, 10, A.</p>
-              </div>
-              <div>
-                <h3>Surrender note</h3>
-                <p>Some Wynn tables offer late surrender, but this trainer uses only Hit, Stand, Double, Split. Surrender spots use the playable fallback.</p>
-              </div>
-            </div>
+            <h2>H17 Basic Strategy</h2>
+            <p class="card-note">Wynn-style 6-deck H17, DAS, RSA. Surrender spots fall back to the playable action in this trainer.</p>
+            <div id="strategy-card-tables" class="strategy-tables"></div>
           </div>
         </section>
       </section>

@@ -154,6 +154,34 @@ h1 {
   margin: 14px 0;
 }
 
+.bet-control {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 900;
+}
+
+.bet-control input {
+  width: 76px;
+  min-height: 30px;
+  border: 1px solid var(--edge);
+  border-radius: 6px;
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.25);
+  font: 900 0.95rem/1 system-ui, sans-serif;
+  text-align: center;
+}
+
+.bet-control input:disabled {
+  opacity: 0.5;
+}
+
 button {
   min-height: 42px;
   padding: 0 16px;
@@ -229,8 +257,10 @@ button.secondary {
   left: 0;
   bottom: 52px;
   z-index: 5;
-  width: min(720px, 100%);
-  padding: 16px;
+  width: min(980px, calc(100vw - 28px));
+  max-height: min(76vh, 760px);
+  overflow: auto;
+  padding: 14px;
   border: 1px solid var(--gold);
   border-radius: 8px;
   background: #f8f1df;
@@ -238,37 +268,92 @@ button.secondary {
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.42);
 }
 
-.strategy-card h2 {
-  margin-bottom: 10px;
+.strategy-card[hidden] {
+  display: none;
 }
 
-.mini-grid {
+.strategy-card h2 {
+  margin-bottom: 4px;
+}
+
+.card-note {
+  margin-bottom: 12px;
+  color: #4d4332;
+  font-size: 0.85rem;
+}
+
+.strategy-tables {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
-.mini-grid div {
-  padding: 10px;
-  border: 1px solid #d8c797;
-  border-radius: 8px;
+.strategy-table-section {
+  min-width: 0;
 }
 
-.mini-grid h3 {
+.strategy-table-section h3 {
   margin-bottom: 6px;
   font-size: 0.85rem;
   text-transform: uppercase;
 }
 
-.mini-grid p {
-  font-size: 0.9rem;
-  line-height: 1.35;
+.strategy-table-section table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow: hidden;
+  border-radius: 6px;
+  font-size: 0.72rem;
+}
+
+.strategy-table-section th,
+.strategy-table-section td {
+  border: 1px solid #d7cba8;
+  padding: 4px 3px;
+  text-align: center;
+}
+
+.strategy-table-section th {
+  background: #efe3bf;
+  color: #2c2518;
+  font-weight: 900;
+}
+
+.strategy-table-section td {
+  color: #111;
+  font-weight: 900;
+}
+
+.strategy-table-section td.hit {
+  background: #f3d46b;
+}
+
+.strategy-table-section td.stand {
+  background: #80c792;
+}
+
+.strategy-table-section td.double {
+  background: #83b8e8;
+}
+
+.strategy-table-section td.split {
+  background: #e9867d;
+}
+
+.strategy-table-section::after {
+  content: "H Hit   S Stand   D Double   P Split";
+  display: block;
+  margin-top: 6px;
+  color: #4d4332;
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
 @media (max-width: 760px) {
   .topbar,
   .felt,
-  .mini-grid {
+  .strategy-tables {
     grid-template-columns: 1fr;
   }
 
