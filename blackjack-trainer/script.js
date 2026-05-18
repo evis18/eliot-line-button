@@ -466,7 +466,7 @@ function settleRound() {
     results.push(hand.result);
   }
 
-  roundFeedbackEl.textContent = `Dealer finished. Round over: ${results.join(", ")}.`;
+  roundFeedbackEl.textContent = `Hand result: ${results.join(", ")}.`;
   updateStats();
   render();
 }
