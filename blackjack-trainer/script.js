@@ -296,9 +296,14 @@ function hit() {
   if (roundOver) return;
   checkStrategy("hit");
   const hand = hands[activeHand];
+  const handNumber = activeHand + 1;
   hand.cards.push(draw());
   const value = handValue(hand.cards);
-  if (value.bust || hand.splitAces) finishHand();
+  if (value.bust) {
+    finishHand(`Hand ${handNumber} busted.`);
+  } else if (hand.splitAces) {
+    finishHand(`Hand ${handNumber} complete.`);
+  }
   render();
 }
 
@@ -313,10 +318,12 @@ function doubleDown() {
   if (roundOver || !canDouble(hands[activeHand])) return;
   checkStrategy("double");
   const hand = hands[activeHand];
+  const handNumber = activeHand + 1;
   hand.bet *= 2;
   hand.doubled = true;
   hand.cards.push(draw());
-  finishHand();
+  const value = handValue(hand.cards);
+  finishHand(value.bust ? `Hand ${handNumber} doubled and busted.` : `Hand ${handNumber} doubled and is complete.`);
   render();
 }
 
@@ -348,12 +355,15 @@ function split() {
   render();
 }
 
-function finishHand() {
+function finishHand(message = null) {
   const finishedHand = activeHand + 1;
   hands[activeHand].done = true;
   moveToNextHand();
   if (!roundOver && !dealerPlaying) {
-    roundFeedbackEl.textContent = `Hand ${finishedHand} complete. Now play Hand ${activeHand + 1} of ${hands.length}.`;
+    const prefix = message ?? `Hand ${finishedHand} complete.`;
+    roundFeedbackEl.textContent = `${prefix} Now play Hand ${activeHand + 1} of ${hands.length}.`;
+  } else if (message && dealerPlaying) {
+    roundFeedbackEl.textContent = message;
   }
 }
 
