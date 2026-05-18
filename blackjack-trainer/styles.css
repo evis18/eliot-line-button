@@ -148,10 +148,20 @@ h1 {
   color: transparent;
 }
 
-.controls {
+.controls,
+.deal-controls {
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.controls {
   margin: 14px 0;
+}
+
+.deal-controls {
+  display: flex;
+  align-items: center;
+  margin: -6px 0 14px;
 }
 
 .bet-control {

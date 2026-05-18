@@ -577,7 +577,7 @@ function render() {
   controls.stand.disabled = !activeHandIsPlayable || splitAcesAwaitingResplit;
   controls.double.disabled = !activeHandIsPlayable || !canDouble(hand);
   controls.split.disabled = !activeHandIsPlayable || !canSplit(hand);
-  controls.deal.disabled = dealerPlaying;
+    controls.deal.disabled = dealerPlaying;
   betInput.disabled = !roundOver || dealerPlaying;
 
   handTabsEl.replaceChildren(...hands.map((item, index) => {
