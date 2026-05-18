@@ -1,6 +1,8 @@
 const suits = ["♠", "♥", "♦", "♣"];
 const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const upcards = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "A"];
+const dealerRevealDelay = 715;
+const dealerHitDelay = 825;
 
 const dealerCardsEl = document.querySelector("#dealer-cards");
 const playerCardsEl = document.querySelector("#player-cards");
@@ -388,7 +390,7 @@ async function dealerPlay() {
   dealerPlaying = true;
   roundFeedbackEl.textContent = "Dealer reveals the hole card.";
   render();
-  await sleep(650);
+  await sleep(dealerRevealDelay);
 
   while (true) {
     const value = handValue(dealerHand);
@@ -399,7 +401,7 @@ async function dealerPlay() {
       : `Dealer hits ${value.total}.`;
     dealerHand.push(draw());
     render();
-    await sleep(750);
+    await sleep(dealerHitDelay);
   }
 }
 
@@ -416,7 +418,7 @@ async function beginDealerTurn() {
     dealerPlaying = true;
     roundFeedbackEl.textContent = "Dealer reveals the hole card.";
     render();
-    await sleep(650);
+    await sleep(dealerRevealDelay);
   }
 
   settleRound();
