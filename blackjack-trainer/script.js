@@ -1,8 +1,8 @@
 const suits = ["♠", "♥", "♦", "♣"];
 const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const upcards = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "A"];
-const dealerRevealDelay = 715;
-const dealerHitDelay = 825;
+const dealerRevealDelay = 787;
+const dealerHitDelay = 908;
 
 const dealerCardsEl = document.querySelector("#dealer-cards");
 const playerCardsEl = document.querySelector("#player-cards");
