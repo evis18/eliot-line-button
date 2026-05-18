@@ -218,6 +218,17 @@ button.secondary {
   border: 1px solid var(--edge);
 }
 
+.deal-button {
+  color: #071c18;
+  background: #7ee0a0;
+  border: 1px solid rgba(126, 224, 160, 0.8);
+  box-shadow: 0 0 0 2px rgba(126, 224, 160, 0.18);
+}
+
+.deal-button:hover:not(:disabled) {
+  background: #9bf0b8;
+}
+
 .feedback {
   display: grid;
   gap: 6px;
